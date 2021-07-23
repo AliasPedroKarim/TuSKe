@@ -7,19 +7,19 @@ sourceCompatibility = 1.8
 repositories {
     jcenter()
     mavenCentral()
-    //Spigot
+    // Spigot
     maven {
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
-    //Skript
+    // Skript
     maven {
         url 'https://raw.githubusercontent.com/bensku/mvn-repo/master'
     }
-    //ViaVersion
+    // ViaVersion
     maven {
         url 'https://repo.viaversion.com/'
     }
-    //Some Skript dependencies to avoid issues
+    // Some Skript dependencies to avoid issues
     maven {
         url 'https://oss.sonatype.org/content/groups/public/'
     }
@@ -32,7 +32,7 @@ repositories {
     maven {
         url 'http://maven.elmakers.com/repository/'
     }
-    //PreicousStone
+    // PreicousStone
     maven {
         url 'https://jitpack.io'
     }
@@ -51,14 +51,15 @@ dependencies {
     //Generex API. Used to expressions to generate strings from regex
     compileWithJar files('dependencies/Generex.jar')
     //ViaVersion
-    compile 'us.myles:viaversion:1.1.1'
+    // compile 'us.myles:viaversion:1.1.1'
+    compile 'com.viaversion:viaversion:4.0.1'
     configurations.compile.extendsFrom(configurations.compileWithJar)
 }
 
 //Used to copy the final jar in test server located in at same place
 //It requires that you execute "./gradlew clean build copy"
 task copy(type: Copy) {
-    from 'build/libs/TuSKe.jar'
+    from "build/libs/TuSKe-${project.property('version')}.jar"
     into 'server/plugins'
 }
 
@@ -69,7 +70,8 @@ processResources {
 }
 
 jar {
-    archiveName 'TuSKe.jar'
+    archiveName "TuSKe-${project.property('version')}.jar"
+
     from {
         configurations.compileWithJar.collect { it.isDirectory() ? it : zipTree(it) }
     }

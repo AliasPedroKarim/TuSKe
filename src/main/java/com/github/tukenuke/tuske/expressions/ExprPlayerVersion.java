@@ -8,15 +8,15 @@ import com.github.tukenuke.tuske.TuSKe;
 import com.github.tukenuke.tuske.documentation.Dependency;
 import com.github.tukenuke.tuske.util.ReflectionUtils;
 import com.github.tukenuke.tuske.util.Registry;
+import com.viaversion.viaversion.ViaVersionPlugin;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.bukkit.platform.BukkitViaAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import javax.annotation.Nullable;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import org.bukkit.plugin.java.JavaPlugin;
-import us.myles.ViaVersion.ViaVersionPlugin;
-import us.myles.ViaVersion.api.protocol.ProtocolVersion;
-import us.myles.ViaVersion.bukkit.platform.BukkitViaAPI;
 
 import java.util.logging.Level;
 
