@@ -2,6 +2,7 @@ package com.github.tukenuke.tuske.manager.gui.v2;
 
 import ch.njol.skript.SkriptEventHandler;
 import ch.njol.skript.lang.*;
+import ch.njol.util.NonNullPair;
 import com.github.tukenuke.tuske.TuSKe;
 import com.github.tukenuke.tuske.util.ReflectionUtils;
 import com.github.tukenuke.tuske.listeners.GUIListener;
@@ -13,6 +14,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * @author Tuke_Nuke on 15/03/2017
  */
@@ -25,7 +28,8 @@ public class SkriptGUIEvent extends SkriptEvent {
 		return instance;
 	}
 
-	private final Map<Class, List<Trigger>> triggers = ReflectionUtils.getField(SkriptEventHandler.class, null, "triggers");
+	// private final Map<Class, List<Trigger>> triggers = ReflectionUtils.getField(SkriptEventHandler.class, null, "triggers");
+	private final List<NonNullPair<Class<? extends Event>, Trigger>> triggers = ReflectionUtils.getField(SkriptEventHandler.class, null, "triggers");
 	private final List<GUIListener> listeners = new ArrayList<>();
 	private boolean registered = false;
 	private SkriptGUIEvent() {
@@ -83,12 +87,16 @@ public class SkriptGUIEvent extends SkriptEvent {
 	private void addTrigger(Trigger t, int priority, Class<? extends Event>... clzz) {
 		if (priority == 0) {
 			for (Class clz : clzz) {
-				List<Trigger> current = triggers.get(clz);
+				List<Trigger> current = triggers.stream()
+						.filter(classTriggerNonNullPair -> classTriggerNonNullPair.getFirst().isInstance(clz)).map(NonNullPair::getSecond)
+						.collect(Collectors.toList());
 				List<Trigger> newList = new ArrayList<>();
 				if (current == null) {
 					//It will add a new array in case it doesn't have the event.
 					newList.add(t);
-					triggers.put(clz, newList);
+					for (Trigger tt : newList) {
+						triggers.add(new NonNullPair<>(clz, tt));
+					}
 				} else {
 					//It will put this trigger at first index
 					//Then adding the rest all again.
