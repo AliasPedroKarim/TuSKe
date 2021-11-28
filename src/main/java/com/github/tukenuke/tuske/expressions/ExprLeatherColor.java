@@ -23,7 +23,7 @@ import ch.njol.util.coll.CollectionUtils;
 
 public class ExprLeatherColor extends SimpleExpression<Integer>{
 	static {
-		Registry.newProperty(ExprLeatherColor.class, "[leather] (0¦red|1¦green|2¦blue) colo[u]r", "-itemstacks/colors");
+		Registry.newProperty(ExprLeatherColor.class, "[leather] (0ï¿½red|1ï¿½green|2ï¿½blue) colo[u]r", "-itemstacks/colors");
 	}
 
 	private Expression<?> i;
@@ -65,7 +65,7 @@ public class ExprLeatherColor extends SimpleExpression<Integer>{
 				if (im instanceof LeatherArmorMeta)
 					color = ((LeatherArmorMeta) im).getColor();
 			} else if (array[0] instanceof ch.njol.skript.util.Color)
-				color = ((ch.njol.skript.util.Color)array[0]).getBukkitColor();
+				color = ((ch.njol.skript.util.Color)array[0]).asBukkitColor();
 			if (color != null)
 				switch (rgb){
 					case 0: return new Integer[] {color.getRed()};

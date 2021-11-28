@@ -10,6 +10,7 @@ import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.config.SimpleNode;
 import ch.njol.skript.doc.NoDoc;
 import ch.njol.skript.lang.*;
+import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.util.Kleenean;
 import com.github.tukenuke.tuske.effects.EffEvaluate;
 import com.github.tukenuke.tuske.util.EffectSection;
@@ -71,7 +72,7 @@ public class EffEvaluateSection extends EffectSection {
 		}
 		args = Commands.currentArguments;
 		withSafety = parseResult.expr.contains("with safety");
-		currentScript = ScriptLoader.currentScript;
+		currentScript = ParserInstance.get().getCurrentScript();
 		return true;
 	}
 

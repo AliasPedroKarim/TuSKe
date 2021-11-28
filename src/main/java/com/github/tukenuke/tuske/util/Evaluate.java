@@ -10,6 +10,7 @@ import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.TriggerSection;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
+import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.log.LogEntry;
 import ch.njol.skript.log.RetainingLogHandler;
 import ch.njol.skript.log.SkriptLogger;
@@ -73,7 +74,7 @@ public class Evaluate {
 			try {
 				Commands.currentArguments = args; //In case it is evaluated in a command, it will make the arguments work
 				if (parseString) {
-					ScriptLoader.currentScript = currentScript;
+					ParserInstance.get().setCurrentScript(currentScript);
 					VariableString vs = VariableString.newInstance(code.replaceAll("\"", "\"\""));
 					if (vs != null)
 						code = vs.getSingle(e);
@@ -99,7 +100,7 @@ public class Evaluate {
 					}
 					toRemove.forEach(Node::remove);
 				}
-				ScriptLoader.currentScript = c;
+				ParserInstance.get().setCurrentScript(c);
 				ScriptLoader.setCurrentEvent("evaluate effect", e.getClass());
 				TriggerSection ts = new TriggerSection(c.getMainNode()) {
 					@Override
@@ -113,7 +114,7 @@ public class Evaluate {
 					}
 				};
 				ScriptLoader.deleteCurrentEvent();
-				ScriptLoader.currentScript = null;
+				ParserInstance.get().setCurrentScript(null);
 				Commands.currentArguments = null;
 				setVariable(log, e, results);
 				TriggerItem.walk(ts, e);

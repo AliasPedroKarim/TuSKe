@@ -8,6 +8,7 @@ import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.Statement;
 import ch.njol.skript.lang.TriggerSection;
+import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.lang.util.SimpleExpression;
 
 /**
@@ -34,7 +35,7 @@ public class ParserUtils {
 			return ReflectionUtils.getField(newParserInstance.getClass(), newParserInstance, "currentSections");
 			
 		}
-		return ScriptLoader.currentSections;
+		return ParserInstance.get().getCurrentSections();
 	}
 	/**
 	 * 

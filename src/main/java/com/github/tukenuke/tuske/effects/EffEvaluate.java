@@ -10,6 +10,7 @@ import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.*;
+import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.util.Kleenean;
 import ch.njol.util.StringUtils;
 import com.github.tukenuke.tuske.util.Evaluate;
@@ -94,7 +95,7 @@ public class EffEvaluate extends Effect{
 			varStr = (Expression<String>) expr[1];
 		withSafety = parseResult.expr.contains("with safety:");
 		args = Commands.currentArguments;
-		currentScript = ScriptLoader.currentScript;
+		currentScript = ParserInstance.get().getCurrentScript();
 		return true;
 	}
 }
