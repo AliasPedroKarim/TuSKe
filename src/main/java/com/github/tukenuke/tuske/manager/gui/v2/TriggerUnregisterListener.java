@@ -26,18 +26,15 @@ public class TriggerUnregisterListener extends SelfRegisteringSkriptEvent {
 		if (t == null) //A file object, just to not use null
 			t = new Trigger(new File("TuSKe"), getClass().getName(), this, new ArrayList<>());
 		//Some old skript version doesn't have this method public
-		ReflectionUtils.invokeMethod(SkriptEventHandler.class, null, "addSelfRegisteringTrigger", t);
+		// ReflectionUtils.invokeMethod(SkriptEventHandler.class, null, "addSelfRegisteringTrigger", t);
+		ReflectionUtils.invokeMethod(SkriptEventHandler.class, "addSelfRegisteringTrigger", null, t);
 	}
 
 	@Override
-	public void register(Trigger t) {
-
-	}
+	public void register(Trigger t) {}
 
 	@Override
-	public void unregister(Trigger t) {
-
-	}
+	public void unregister(Trigger t) {}
 
 	@Override
 	public void unregisterAll() {

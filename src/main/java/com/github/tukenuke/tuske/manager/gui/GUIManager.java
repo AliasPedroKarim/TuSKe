@@ -41,7 +41,7 @@ public class GUIManager {
 		return guis[index] != null? guis[index] : guis[0];
 	}
 	private void addToListener(Inventory inv, int slot, ItemStack item, GUI gui){
-		GUI[] guis2 = null;
+		GUI[] guis2;
 		HashMap<Integer,GUI[]> guislot2 = invs.getOrDefault(inv, new HashMap<>());
 		if (slot == -1) {
 			Integer s = lastSlots.get(inv);
@@ -59,6 +59,7 @@ public class GUIManager {
 		}
 		if (slot >= inv.getSize())
 			return;
+
 		boolean firstSlot = invs.containsKey(inv);
 		if (firstSlot && guislot2.containsKey(slot)){
 			guislot2.get(slot)[getIndex(gui.getClickType())] = gui;

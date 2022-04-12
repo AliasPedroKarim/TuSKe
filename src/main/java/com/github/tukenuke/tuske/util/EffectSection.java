@@ -183,10 +183,14 @@ public abstract class EffectSection extends Condition {
 	private void stopLog(RetainingLogHandler logger) {
 		//Stop the current one
 		logger.stop();
-		//Using reflection to access the iterator of handlers
-		HandlerList handler = ReflectionUtils.getField(SkriptLogger.class, null, "handlers");
-		if (handler == null)
-			return;
+		// Using reflection to access the iterator of handlers
+
+		// HandlerList handler = ReflectionUtils.getField(SkriptLogger.class, null, "handlers");
+		//
+		// if (handler == null)
+		// 	return;
+		HandlerList handler = ParserInstance.get().getHandlers();
+
 		Iterator<LogHandler> it = handler.iterator();
 		//A list containing the last handlers that will be stoped
 		List<LogHandler> toStop = new ArrayList<>();

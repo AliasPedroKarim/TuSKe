@@ -13,7 +13,9 @@ import ch.njol.util.Kleenean;
 
 public class ExprEvaluateFunction extends SimpleExpression<Object>{
 	static {
-		Registry.newSimple(ExprEvaluateFunction.class, "result of function %string% [with <.+?>]", "result of function %string\\(<.+?>\\)");
+		// TODO Je ne sais pas comment ça function ^^
+		// "result of function %string\\(<.+?>\\)"
+		Registry.newSimple(ExprEvaluateFunction.class, "result of function %string% [with <.+?>]");
 	}
 
 	private Expression<String> func;

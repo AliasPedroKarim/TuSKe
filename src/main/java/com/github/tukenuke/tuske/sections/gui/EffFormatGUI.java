@@ -147,10 +147,12 @@ public class EffFormatGUI extends EffectSection {
 							};
 						}
 						GUI gui = new GUI(rn, (i2 != null && i2.getSingle(e) != null ? i2.getSingle(e) : null), (ct != null ? getFromObject(ct.getSingle(e)) : null));
+
 						if (runEvent)
 							gui.toCallEvent(runEvent);
 						else
 							gui.toClose(toClose);
+
 						TuSKe.getGUIManager().newGUI(inv, slots[x].intValue(), i.getSingle(e), gui);
 					}
 				}

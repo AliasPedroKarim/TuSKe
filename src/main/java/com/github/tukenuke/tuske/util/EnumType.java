@@ -74,10 +74,10 @@ public class EnumType extends ClassInfo{
 					return c.getSimpleName() + "." +e.name();
 				}
 
-				@Override
+				/*@Override
 				public String getVariableNamePattern() {
 					return "(" + c.getSimpleName().toLowerCase() + "\\.)?.+";
-				}
+				}*/
 			};
 		} else {
 			return new Parser<T>() {
@@ -109,10 +109,10 @@ public class EnumType extends ClassInfo{
 					return c.getSimpleName() + "." +e.name();
 				}
 
-				@Override
+				/*@Override
 				public String getVariableNamePattern() {
 					return "(" + c.getSimpleName().toLowerCase() + "\\.)?.+";
-				}
+				}*/
 			};
 		}
 	}

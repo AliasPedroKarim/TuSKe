@@ -36,6 +36,9 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
+    maven {
+        url 'https://repo.destroystokyo.com/repository/maven-public/'
+    }
 }
 configurations {
     compileWithJar
@@ -48,7 +51,8 @@ dependencies {
     compile fileTree(dir: 'dependencies', include: '*.jar')
     //Skript
     //compile 'ch.njol:skript:2.2-dev35b'
-    compile 'com.github.SkriptLang:Skript:2.6'
+    // compile 'com.github.SkriptLang:Skript:2.6'
+    compile 'com.github.SkriptLang:Skript:2.6.1'
     //Generex API. Used to expressions to generate strings from regex
     compileWithJar files('dependencies/Generex.jar')
     //ViaVersion

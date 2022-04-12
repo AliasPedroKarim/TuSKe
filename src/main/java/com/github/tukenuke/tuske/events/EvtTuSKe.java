@@ -1,5 +1,6 @@
 package com.github.tukenuke.tuske.events;
 
+import com.github.tukenuke.tuske.TuSKe;
 import com.github.tukenuke.tuske.util.ReflectionUtils;
 import com.github.tukenuke.tuske.manager.gui.GUIActionEvent;
 import com.github.tukenuke.tuske.util.Registry;
@@ -33,7 +34,7 @@ public class EvtTuSKe extends SkriptEvent{
 	}
 
 	@Override
-	public boolean check(Event arg0) {
+	public boolean check(Event event) {
 		return true;
 	}
 
