@@ -1,6 +1,7 @@
 package com.github.tukenuke.tuske.expressions;
 
 import ch.njol.skript.doc.*;
+import ch.njol.skript.util.Version;
 import com.github.tukenuke.tuske.util.ReflectionUtils;
 import com.github.tukenuke.tuske.util.Registry;
 import org.bukkit.event.Event;
@@ -31,7 +32,13 @@ import ch.njol.util.coll.CollectionUtils;
 @Since("1.7-beta.2")
 public class ExprDamageModifier extends SimpleExpression<Double>{
 	static {
-		if (ReflectionUtils.hasClass("org.bukkit.event.entity.EntityDamageEvent.DamageModifier"))
+		boolean hasDamageModifier;
+		if (Skript.getMinecraftVersion().isLargerThan(new Version(16))) {
+			hasDamageModifier = ReflectionUtils.hasClass("org.bukkit.event.entity.EntityDamageEvent$DamageModifier");
+		} else {
+			hasDamageModifier = ReflectionUtils.hasClass("org.bukkit.event.entity.EntityDamageEvent.DamageModifier");
+		}
+		if (hasDamageModifier)
 			Registry.newSimple(ExprDamageModifier.class,
 					"damage [modifier] %damagemodifier%",
 					"%damagemodifier% damage [modifier]");

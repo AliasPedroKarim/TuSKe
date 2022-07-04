@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
 
+def projectVersion = project.property('version')
 sourceCompatibility = 1.8
 
 repositories {
@@ -64,18 +65,18 @@ dependencies {
 //Used to copy the final jar in test server located in at same place
 //It requires that you execute "./gradlew clean build copy"
 task copy(type: Copy) {
-    from "build/libs/TuSKe-${project.property('version')}.jar"
+    from "build/libs/TuSKe-${projectVersion}.jar"
     into 'server/plugins'
 }
 
 processResources {
-    filter ReplaceTokens, tokens: [
-            'version': project.property('version')
-    ]
+    filesMatching('plugin.yml') {
+        expand 'pluginVersion': projectVersion
+    }
 }
 
 jar {
-    archiveName "TuSKe-${project.property('version')}.jar"
+    archiveName "TuSKe-${projectVersion}.jar"
 
     from {
         configurations.compileWithJar.collect { it.isDirectory() ? it : zipTree(it) }

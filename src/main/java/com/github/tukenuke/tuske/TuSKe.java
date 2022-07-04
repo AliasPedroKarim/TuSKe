@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
@@ -19,6 +22,7 @@ import com.github.tukenuke.tuske.hooks.marriage.MarriageRegister;
 import com.github.tukenuke.tuske.hooks.simpleclans.SimpleClansRegister;
 import com.github.tukenuke.tuske.util.Evaluate;
 import com.github.tukenuke.tuske.util.Registry;
+import com.google.common.reflect.ClassPath;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -173,49 +177,49 @@ public class TuSKe extends JavaPlugin {
 			if (arg.length > 0 && arg[0].equalsIgnoreCase("update")){
 				if (arg.length > 1 && arg[1].equalsIgnoreCase("download")){
 					if (updater.hasDownloadReady(false) && getConfig().getBoolean("updater.auto_update"))
-						sender.sendMessage("§e[§cTuSKe§e] §3Already have a downloaded file ready to be updated.");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Already have a downloaded file ready to be updated.");
 					else if (!updater.isLatestVersion()){
-						sender.sendMessage("§e[§cTuSKe§e] §3Downloading the latest version...");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Downloading the latest version...");
 						updater.downloadLatest();
-						sender.sendMessage("§3The latest version was been dowloaded to TuSKe's folder.");
+						sender.sendMessage("ï¿½3The latest version was been dowloaded to TuSKe's folder.");
 					} else
-						sender.sendMessage("§e[§cTuSKe§e] §3The plugin is already running the latest version!");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3The plugin is already running the latest version!");
 				} else if (arg.length > 1 && arg[1].equalsIgnoreCase("plugin")){
 					if (!getConfig().getBoolean("updater.check_for_new_update"))
-						sender.sendMessage("§e[§cTuSKe§e] §3The option 'check_for_new_update', in config file, needs to be true to check for updates.");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3The option 'check_for_new_update', in config file, needs to be true to check for updates.");
 					else if (!updater.isLatestVersion() || updater.hasDownloadReady(true)){
 						if (!updater.hasDownloadReady(false))
 							updater.downloadLatest();
 						getConfig().set("updater.auto_update", true);
-						sender.sendMessage("§e[§cTuSKe§e] §3The plugin will update when the server restarts.");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3The plugin will update when the server restarts.");
 					} else
-						sender.sendMessage("§e[§cTuSKe§e] §3The plugin is already running the latest version!");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3The plugin is already running the latest version!");
 				} else if (arg.length > 1 && arg[1].equalsIgnoreCase("check")){
-					sender.sendMessage("§e[§cTuSKe§e] §3Checking for update...");
+					sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Checking for update...");
 					updater.checkForUpdate(true);
 					Bukkit.getScheduler().runTaskLaterAsynchronously(this, new Runnable(){
 
 						@Override
 						public void run() {
 							if (!updater.isLatestVersion()){
-								sender.sendMessage("§e[§cTuSKe§e] §3New update available: §cv" + updater.getLatestVersion());
+								sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3New update available: ï¿½cv" + updater.getLatestVersion());
 								if (sender instanceof Player)
 									sendDownloadRaw(sender);
 								else
 									sender.sendMessage(new String[]{
-										"§3Check what's new: §c" + updater.getDownloadURL(),
-										"§3You can download and update it with §c/tuske update§3."
+										"ï¿½3Check what's new: ï¿½c" + updater.getDownloadURL(),
+										"ï¿½3You can download and update it with ï¿½c/tuske updateï¿½3."
 									});
 							} else
-								sender.sendMessage("§e[§cTuSKe§e] §3You are running the latest version: §cv" + updater.getLatestVersion());
+								sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3You are running the latest version: ï¿½cv" + updater.getLatestVersion());
 							
 						}}, 1L);
 				} else {
 					sender.sendMessage(new String[]{
-						"§e[§cTuSKe§e] §3Main commands of §c"+ arg[0]+"§3:",
-						"§4/§c" + label + " " + arg[0] + " check §e> §3Check for latest update.",
-						"§4/§c" + label + " " + arg[0] + " download §e> §3Download the latest update.",
-						"§4/§c" + label + " " + arg[0] + " plugin §e> §3Update the plugin after the server restarts.",
+						"ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Main commands of ï¿½c"+ arg[0]+"ï¿½3:",
+						"ï¿½4/ï¿½c" + label + " " + arg[0] + " check ï¿½e> ï¿½3Check for latest update.",
+						"ï¿½4/ï¿½c" + label + " " + arg[0] + " download ï¿½e> ï¿½3Download the latest update.",
+						"ï¿½4/ï¿½c" + label + " " + arg[0] + " plugin ï¿½e> ï¿½3Update the plugin after the server restarts.",
 					});
 					
 				}
@@ -223,32 +227,32 @@ public class TuSKe extends JavaPlugin {
 				if (arg.length > 1 && arg[1].equalsIgnoreCase("config")){
 					reloadConfig();
 					loadConfig();
-					sender.sendMessage("§e[§cTuSKe§e] §3Config reloaded!");
+					sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Config reloaded!");
 				} else if (arg.length > 1 && arg[1].equalsIgnoreCase("enchantments")) {
 					EnchantConfig.reload();
 					if (CustomEnchantment.getEnchantments().size() == 0)
-						sender.sendMessage("§e[§cTuSKe§e] §3No enchantments were loaded. :(");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3No enchantments were loaded. :(");
 					else
-						sender.sendMessage("§e[§cTuSKe§e] §3A total of §c" + CustomEnchantment.getEnchantments().size() + "§3custom enchantments were loaded succesfully.");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3A total of ï¿½c" + CustomEnchantment.getEnchantments().size() + "ï¿½3custom enchantments were loaded succesfully.");
 				} else if (arg.length > 1 && arg[1].equalsIgnoreCase("docs")){
-					sender.sendMessage("§e[§cTuSKe§e] §3Regenerating documentation files using §c" + getConfig().getString("documentation.file_type") + " §3format.");
+					sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Regenerating documentation files using ï¿½c" + getConfig().getString("documentation.file_type") + " ï¿½3format.");
 					generateDocumentation();
 				} else {
 					sender.sendMessage(new String[]{
-						"§e[§cTuSKe§e] §3Main commands of §c"+ arg[0]+"§3:",
-						"§4/§c" + label + " " + arg[0] + " config §e> §3Reload the config.",
-						"§4/§c" + label + " " + arg[0] + " enchantments §e> §3Reload the enchantments' file.",
-						"§4/§c" + label + " " + arg[0] + " docs §e> §Regenerate new documentation files.",
+						"ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Main commands of ï¿½c"+ arg[0]+"ï¿½3:",
+						"ï¿½4/ï¿½c" + label + " " + arg[0] + " config ï¿½e> ï¿½3Reload the config.",
+						"ï¿½4/ï¿½c" + label + " " + arg[0] + " enchantments ï¿½e> ï¿½3Reload the enchantments' file.",
+						"ï¿½4/ï¿½c" + label + " " + arg[0] + " docs ï¿½e> ï¿½Regenerate new documentation files.",
 					});
 					
 				}	
 
 			} else if (arg.length > 0 && arg[0].matches("ench(antment)?")){
 				if (arg.length > 1 && arg[1].equalsIgnoreCase("list")){
-					sender.sendMessage(new String[]{"§e[§cTuSKe§e] §3All registred enchantments:", "      §eName       §c-§e ML §c-§e R §c-§e Enabled?"});
+					sender.sendMessage(new String[]{"ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3All registred enchantments:", "      ï¿½eName       ï¿½c-ï¿½e ML ï¿½c-ï¿½e R ï¿½c-ï¿½e Enabled?"});
 					
 					for (CustomEnchantment c : CustomEnchantment.getEnchantments()){
-						sender.sendMessage("§c" + left(c.getId(), 15) + " §4-§c  " + c.getMaxLevel() + "  §4-§c " + c.getRarity() + " §4- " + (c.isEnabledOnAnvil() ? "§a" : "§c") + (c.isEnabledOnTable()));
+						sender.sendMessage("ï¿½c" + left(c.getId(), 15) + " ï¿½4-ï¿½c  " + c.getMaxLevel() + "  ï¿½4-ï¿½c " + c.getRarity() + " ï¿½4- " + (c.isEnabledOnAnvil() ? "ï¿½a" : "ï¿½c") + (c.isEnabledOnTable()));
 					}
 					
 				} else if (arg.length > 1 && arg[1].equalsIgnoreCase("toggle")){
@@ -256,13 +260,13 @@ public class TuSKe extends JavaPlugin {
 					if (arg.length > 2 && EnchantManager.isCustomByID(ench)){
 						CustomEnchantment ce = CustomEnchantment.getByID(ench);
 						ce.setEnabledOnTable(!ce.isEnabledOnTable());
-						sender.sendMessage("§e[§cTuSKe§e] §3The enchantment §c" + ce.getId() + "§3 was " + (ce.isEnabledOnTable() ? "§aenabled" : "§cdisabled") + "!");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3The enchantment ï¿½c" + ce.getId() + "ï¿½3 was " + (ce.isEnabledOnTable() ? "ï¿½aenabled" : "ï¿½cdisabled") + "!");
 					} else if (arg.length > 2 && !EnchantManager.isCustomByID(ench))
-						sender.sendMessage("§e[§cTuSKe§e] §3There isn't any registred enchantment with ID §c" + ench + "§3.");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3There isn't any registred enchantment with ID ï¿½c" + ench + "ï¿½3.");
 					else
 						sender.sendMessage(new String[]{
-								"§e[§cTuSKe§e] §3Use this command to enable/disable a enchantment.",
-								"§4/§c" + label + " "+arg[0]+" toggle §4<§cID§4> §e> §3Enable/disable a enchantment.",
+								"ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Use this command to enable/disable a enchantment.",
+								"ï¿½4/ï¿½c" + label + " "+arg[0]+" toggle ï¿½4<ï¿½cIDï¿½4> ï¿½e> ï¿½3Enable/disable a enchantment.",
 							});
 				} else if (arg.length > 1 && arg[1].equalsIgnoreCase("give")){			
 					if (sender instanceof Player){
@@ -275,35 +279,35 @@ public class TuSKe extends JavaPlugin {
 							if (i != null && !i.getType().equals(Material.AIR)){
 								if (ce.isCompatible(i)){
 									if(!EnchantManager.addToItem(p.getInventory().getItem(p.getInventory().getHeldItemSlot()), ce, lvl, true)){
-										sender.sendMessage("§e[§cTuSKe§e] §3The enchantment §c" + ce.getId() + "§3 couldn't be added to your held item.");
+										sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3The enchantment ï¿½c" + ce.getId() + "ï¿½3 couldn't be added to your held item.");
 									} else
-										sender.sendMessage("§e[§cTuSKe§e] §3The enchantment §c" + ce.getId() + "§3 was added to your held item.");
+										sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3The enchantment ï¿½c" + ce.getId() + "ï¿½3 was added to your held item.");
 								} else
-									sender.sendMessage("§e[§cTuSKe§e] §3The enchantment §c" + ce.getId() + "§3 doesn't accept this item.");
+									sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3The enchantment ï¿½c" + ce.getId() + "ï¿½3 doesn't accept this item.");
 							} else
-								sender.sendMessage("§e[§cTuSKe§e] §3You have to hold a item first.");
+								sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3You have to hold a item first.");
 						} else if (arg.length > 2 && !EnchantManager.isCustomByID(ench)){	
-							sender.sendMessage("§e[§cTuSKe§e] §3There isn't any registred enchantment with ID §c" + ench + "§3.");
+							sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3There isn't any registred enchantment with ID ï¿½c" + ench + "ï¿½3.");
 						} else
 							sender.sendMessage(new String[]{
-									"§e[§cTuSKe§e] §3Use this command to enchant your held item.",
-									"§4/§c" + label + " " + arg[0] + " give §4<§cID§4> §c[§4<§cLevel§4>§c] §e> §3Add a enchantment to your held item.",
+									"ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Use this command to enchant your held item.",
+									"ï¿½4/ï¿½c" + label + " " + arg[0] + " give ï¿½4<ï¿½cIDï¿½4> ï¿½c[ï¿½4<ï¿½cLevelï¿½4>ï¿½c] ï¿½e> ï¿½3Add a enchantment to your held item.",
 								});
 					} else
-						sender.sendMessage("§e[§cTuSKe§e] §3This command is only for players.");
+						sender.sendMessage("ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3This command is only for players.");
 				} else
 					sender.sendMessage(new String[]{
-							"§e[§cTuSKe§e] §3Main commands of §c"+ arg[0]+"§3:",
-							"§4/§c" + label + " " + arg[0] + " list §e> §3Shows a list of registered enchantment.",
-							"§4/§c" + label + " " + arg[0] + " toggle §e> §3Enable/disable a enchantment.",
-							"§4/§c" + label + " " + arg[0] + " give §e> §3Add a enchantment to your held item.",
+							"ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Main commands of ï¿½c"+ arg[0]+"ï¿½3:",
+							"ï¿½4/ï¿½c" + label + " " + arg[0] + " list ï¿½e> ï¿½3Shows a list of registered enchantment.",
+							"ï¿½4/ï¿½c" + label + " " + arg[0] + " toggle ï¿½e> ï¿½3Enable/disable a enchantment.",
+							"ï¿½4/ï¿½c" + label + " " + arg[0] + " give ï¿½e> ï¿½3Add a enchantment to your held item.",
 						});
 			} else {
 				sender.sendMessage(new String[]{
-					"§e[§cTuSKe§e] §3Main commands:",
-					"§4/§c" + label + " reload §e> §3Reload config/enchantments.",
-					"§4/§c" + label + " update §e> §3Check for latest update.",
-					"§4/§c" + label + " ench §e> §3Manage the enchantments.",
+					"ï¿½e[ï¿½cTuSKeï¿½e] ï¿½3Main commands:",
+					"ï¿½4/ï¿½c" + label + " reload ï¿½e> ï¿½3Reload config/enchantments.",
+					"ï¿½4/ï¿½c" + label + " update ï¿½e> ï¿½3Check for latest update.",
+					"ï¿½4/ï¿½c" + label + " ench ï¿½e> ï¿½3Manage the enchantments.",
 				});
 				
 			}
